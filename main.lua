@@ -12,32 +12,28 @@ VIRTUAL_HEIGHT=243
 
 --SPEED OF THE PADDLE
 PADDLE_SPEED = 200
--- INITIALIZING / LOADING THE GAME
+
 function love.load()
 
  love.graphics.setDefaultFilter('nearest','nearest')
 
- -- stting title of the game window
+ 
  love.window.setTitle('PONG')
 
  --  seed the random no. generator so that calls to random are always random 
  -- use the current time , since that will vary on start up everytime 
  math.randomseed(os.time())
 
- -- more retro font
+ 
  smallfont = love.graphics.newFont('font.ttf',8)
 
- -- setting score font
  scorefont = love.graphics.newFont('font.ttf',32)
 
- -- setting victory font
  largefont = love.graphics.newFont('font.ttf',16)
 
- -- setting activre font to small font
  love.graphics.setFont(smallfont)
 
- -- setting up sound effects , later the table can be indexed and call each entry's play method
-
+ 
  sound = {
      ['paddle_hit']=love.audio.newSource('sound/paddle_hit.wav','static'),
      ['score']=love.audio.newSource('sound/score.wav','static'),
@@ -78,8 +74,7 @@ function love.update(dt)
         ball.dx = -math.random(140,200)
      end
     elseif gamestate=='play' then
-     -- detecting collision of the ball with paddle, reversing dx of ball if true
-     -- and slightly increasing it , then altering dy based on position of the collision
+     
       if ball:collide(player1) then 
         ball.dx= - ball.dx*1.04
         ball.x = player1.x + 5
@@ -97,7 +92,7 @@ function love.update(dt)
         ball.dx= - ball.dx*1.04
         ball.x = player2.x - 5
         
-        --keep velocity in same direction but randomize it 
+        
         if ball.dy < 0 then 
             ball.dy = -math.random(10,150)
         else
@@ -111,7 +106,7 @@ function love.update(dt)
         ball.dy = -ball.dy
         sound['wall_hit']:play()
      end
-     -- -4 to account for size of the ball 
+     
      if ball.y >= VIRTUAL_HEIGHT -4 then
         ball.y = VIRTUAL_HEIGHT -4
         ball.dy = - ball.dy
@@ -126,7 +121,7 @@ function love.update(dt)
         servingPlayer = 1
         player2score = player2score+1
         sound['score']:play()
-        -- if the plyer reaches the score of 10 he wins ; game gets over ; set the stage to done for printing victory message
+        
         if player2score==10 then 
             winningPlayer =2
             gamestate='done'
@@ -177,7 +172,7 @@ function love.update(dt)
     player2:update(dt)
 end
 
--- keyboard handling
+
 function love.keypressed(key)
     if key=='escape' then
         love.event.quit()
@@ -190,7 +185,7 @@ function love.keypressed(key)
             gamestate='serve' -- game comes in the restart phase
                                -- but it sets the service to losing player    
             
-            -- ball' new reset method
+          
             ball:reset()
 
             -- reset scores to 0
@@ -209,7 +204,7 @@ end
 
 function love.draw()
  push:apply('start')
-  -- clearing the screen with a specific color
+
 
   love.graphics.clear(40,45,52,255) -- rgba format
   displayScore()
@@ -225,28 +220,28 @@ function love.draw()
     love.graphics.printf('PLAYER '..tostring(servingPlayer).."'S SERVE!",0,10,VIRTUAL_WIDTH,'center') 
     love.graphics.printf('PRESS ENTER TO SERVE !!',0,20,VIRTUAL_WIDTH,'center')
   elseif gamestate=='play' then
-    -- no message
+ 
   elseif gamestate=='done' then
-    -- UI message
+
     love.graphics.setFont(largefont)
     love.graphics.printf('PLAYER '..tostring(winningPlayer)..' WINS!!!!!!',0,10,VIRTUAL_WIDTH,'center')
     love.graphics.setFont(smallfont)
     love.graphics.printf('PRESS ENTER TO RESTART THE GAME AND ESC. TO TERMINATE THE APP ',0,30,VIRTUAL_WIDTH,'center')
 end
 
-  -- rendering paddles and balls via class render method
+ 
   player1:render()
   player2:render()
   ball:render()
 
   -- function to demonstrate frames per seconds in love 2d
   displayFPS()
-  -- end render at virtual resolution
+ 
   push:apply('end')
 end
---[[rendering fps]]
+
 function displayFPS()
-    --- simple fps accross all states
+    
     love.graphics.setFont(smallfont)
     love.graphics.setColor(0,255,0,255) -- green color
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()),10,10)
