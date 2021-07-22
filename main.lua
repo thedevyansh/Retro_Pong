@@ -23,11 +23,11 @@ function love.load()
     -- use the current time , since that will vary on start up everytime 
     math.randomseed(os.time())
 
-    smallfont = love.graphics.newFont('font.ttf', 8)
+    smallfont = love.graphics.newFont('fonts/font.ttf', 8)
 
-    scorefont = love.graphics.newFont('font.ttf', 32)
+    scorefont = love.graphics.newFont('fonts/font.ttf', 32)
 
-    largefont = love.graphics.newFont('font.ttf', 16)
+    largefont = love.graphics.newFont('fonts/font.ttf', 16)
 
     love.graphics.setFont(smallfont)
 
